@@ -7,7 +7,7 @@ import axios from 'axios';
 import swal from 'sweetalert';
 
 
-function EditProduct(){
+function EditProduct() {
   const product_props = useParams();
   const navigate = useNavigate();
 
@@ -60,7 +60,7 @@ function EditProduct(){
         setLoading(false)
         swal("Preencha todos os campos obrigatórios", "", "error")
         setError(response.data.errors)
-      } else if(response.data.status === 404) {
+      } else if (response.data.status === 404) {
         swal('Error', response.data.message, 'error')
         navigate('/admin/view-product')
       }
@@ -83,113 +83,101 @@ function EditProduct(){
     })
   }, [])
 
-  return(
-    <div className='sb-nav-fixed'>
-      <Navbar />
-      <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
-          <Sidebar />
-        </div>
+  return (
 
+    <main>
+      <div className='container-fluid px-4'>
+        <div className='card mt-4'>
+          <div className='card-header'>
+            <h4>
+              Adicionar Produto
+            </h4>
+          </div>
 
-        <div id="layoutSidenav_content">
-          <main>
-            <div className='container-fluid px-4'>
-              <div className='card mt-4'>
-                <div className='card-header'>
-                  <h4>
-                    Adicionar Produto
-                  </h4>
+          <div className='card-body'>
+            <form onSubmit={submitProduct} encType='multipart/form-data'>
+
+              <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Informações Básicas</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="otherdetails-tab" data-bs-toggle="tab" data-bs-target="#otherdetails" type="button" role="tab" aria-controls="otherdetails" aria-selected="false">Informações Complementares</button>
+                </li>
+              </ul>
+
+              <div class="tab-content" id="myTabContent">
+
+                <div class="tab-pane card-body border fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+                  <div className='form-group mb-3'>
+                    <label>Selecione uma Categoria</label>
+                    <select name='category_id' onChange={handleInput} value={productInput.category_id} className='form-control'>
+                      <option>Selecione uma Categoria</option>
+                      {
+                        categories.map((item) => {
+                          return (
+                            <option value={item.id} key={item.id}>{item.name}</option>
+                          )
+                        })
+                      }
+                    </select>
+                    <small className='text-danger'>{errors.category_id}</small>
+                  </div>
+
+                  <div className='form-group mb-3'>
+                    <label>Nome</label>
+                    <input type="text" name="name" onChange={handleInput} value={productInput.name} className="form-control" />
+                    <small className='text-danger'>{errors.name}</small>
+                  </div>
+
+                  <div className='form-group mb-3'>
+                    <label>Descrição</label>
+                    <textarea type="text" name="description" onChange={handleInput} value={productInput.description} className="form-control" />
+                  </div>
                 </div>
 
-                <div className='card-body'>
-                  <form onSubmit={submitProduct} encType='multipart/form-data'>
+                <div class="tab-pane card-body border fade" id="otherdetails" role="tabpanel" aria-labelledby="otherdetails-tab">
+                  <div className='row'>
+                    <div className='col-md-4 form-group mb-3'>
+                      <label>Preço de Venda</label>
+                      <input type="text" name="selling_price" onChange={handleInput} value={productInput.selling_price} className='form-control' />
+                      <small className='text-danger'>{errors.selling_price}</small>
+                    </div>
+                    <div className='col-md-4 form-group mb-3'>
+                      <label>Preço Original</label>
+                      <input type="text" name="original_price" onChange={handleInput} value={productInput.original_price} className='form-control' />
+                      <small className='text-danger'>{errors.original_price}</small>
+                    </div>
 
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                      <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Informações Básicas</button>
-                      </li>
-                      <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="otherdetails-tab" data-bs-toggle="tab" data-bs-target="#otherdetails" type="button" role="tab" aria-controls="otherdetails" aria-selected="false">Informações Complementares</button>
-                      </li>
-                    </ul>
-
-                    <div class="tab-content" id="myTabContent">
-
-                      <div class="tab-pane card-body border fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-
-                        <div className='form-group mb-3'>
-                          <label>Selecione uma Categoria</label>
-                          <select name='category_id' onChange={handleInput} value={productInput.category_id} className='form-control'>
-                            <option>Selecione uma Categoria</option>
-                            {
-                              categories.map((item) => {
-                                return (
-                                  <option value={item.id} key={item.id}>{item.name}</option>
-                                )
-                              })
-                            }
-                          </select>
-                          <small className='text-danger'>{errors.category_id}</small>
-                        </div>
-
-                        <div className='form-group mb-3'>
-                          <label>Nome</label>
-                          <input type="text" name="name" onChange={handleInput} value={productInput.name} className="form-control" />
-                          <small className='text-danger'>{errors.name}</small>
-                        </div>
-
-                        <div className='form-group mb-3'>
-                          <label>Descrição</label>
-                          <textarea type="text" name="description" onChange={handleInput} value={productInput.description} className="form-control" />
-                        </div>
-                      </div>
-
-                      <div class="tab-pane card-body border fade" id="otherdetails" role="tabpanel" aria-labelledby="otherdetails-tab">
-                        <div className='row'>
-                          <div className='col-md-4 form-group mb-3'>
-                            <label>Preço de Venda</label>
-                            <input type="text" name="selling_price" onChange={handleInput} value={productInput.selling_price} className='form-control' />
-                            <small className='text-danger'>{errors.selling_price}</small>
-                          </div>
-                          <div className='col-md-4 form-group mb-3'>
-                            <label>Preço Original</label>
-                            <input type="text" name="original_price" onChange={handleInput} value={productInput.original_price} className='form-control' />
-                            <small className='text-danger'>{errors.original_price}</small>
-                          </div>
-
-                          <div className='col-md-4 form-group mb-3'>
-                            <label>Marca</label>
-                            <input type="text" name="brand" onChange={handleInput} value={productInput.brand} className='form-control' />
-                            <small className='text-danger'>{errors.brand}</small>
-
-                          </div>
-                          <div className='col-md-12 form-group'>
-                            <label>Imagem</label>
-                            <input type="file" name="image" onChange={handleImage} className='form-control' />
-                            <small className='text-danger'>{errors.image}</small>
-                          </div>
-                        </div>
-                      </div>
+                    <div className='col-md-4 form-group mb-3'>
+                      <label>Marca</label>
+                      <input type="text" name="brand" onChange={handleInput} value={productInput.brand} className='form-control' />
+                      <small className='text-danger'>{errors.brand}</small>
 
                     </div>
-                    {loading ?
-                      <div class="spinner-border" role="status">
-                        <span class="sr-only">Carregando...</span>
-                      </div>
-                      :
-                      <button type='submit' className='btn btn-primary px-4 mt-2'>Adicionar Produto</button>
-                    }
-                  </form>
+                    <div className='col-md-12 form-group'>
+                      <label>Imagem</label>
+                      <input type="file" name="image" onChange={handleImage} className='form-control' />
+                      <small className='text-danger'>{errors.image}</small>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </main>
-          <Footer />
-        </div>
 
+              </div>
+              {loading ?
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Carregando...</span>
+                </div>
+                :
+                <button type='submit' className='btn btn-primary px-4 mt-2'>Adicionar Produto</button>
+              }
+            </form>
+          </div>
+        </div>
       </div>
-    </div>
+    </main>
+
   )
 }
 

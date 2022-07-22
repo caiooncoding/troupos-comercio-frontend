@@ -8,27 +8,15 @@ import '../../assets/admin/js/scripts';
 const Admin = () => {
 
   return (
-    <div className='sb-nav-fixed'>
-      <Navbar />
-      <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
-          <Sidebar />
-        </div>
 
+    <main>
 
-        <div id="layoutSidenav_content">
-          <main>
+      <p className='lead'>
+        Escolha uma sessão do painel.
+      </p>
 
-            <p className='lead'>
-              Escolha uma sessão do painel.
-            </p>
+    </main>
 
-          </main>
-          <Footer />
-        </div>
-
-      </div>
-    </div>
   )
 }
 

@@ -88,7 +88,7 @@ function Login() {
                   </div>
                   <div className="d-flex mb-3 justify-content-between">
                     <button type="submit" className="btn btn-primary">Entrar</button>
-                    <button className="btn btn-primary"><a href="/register">Registre-se</a></button>
+                    <a className="btn btn-primary" href="/register">Registre-se</a>
                   </div>
                 </form>
               </div>

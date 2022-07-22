@@ -29,10 +29,10 @@ const Users = () => {
     clickedUser.innerText = "Deletando"
 
     axios.delete(`/api/delete-user/${id}`).then(response => {
-      if(response.data.status === 200){
+      if (response.data.status === 200) {
         swal('Sucesso', response.data.message, 'success')
         clickedUser.closest('tr').remove()
-      } else if(response.data.status === 404){
+      } else if (response.data.status === 404) {
         swal('Error', response.data.message, 'error')
       }
     })
@@ -44,53 +44,41 @@ const Users = () => {
   }, [])
 
   return (
-    <div className='sb-nav-fixed'>
-      <Navbar />
-      <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
-          <Sidebar />
-        </div>
 
+    <main>
 
-        <div id="layoutSidenav_content">
-          <main>
-
-            <div>
-              <table className="table">
-                <tbody>
-                  <tr>
-                    <th scope="row">Nome</th>
-                    <th scope="row">Email</th>
-                    <th scope="row">Telefone</th>
-                  </tr>
-                  {loading &&
-                    <div class="text-center">
-                      <div class="spinner-border" role="status">
-                        <span class="sr-only">Loading...</span>
-                      </div>
-                    </div>
-                  }
-                  {users.map((user) => {
-                    return (
-                      <tr key={user.id}>
-                        <td>{user.name}</td>
-                        <td>{user.email}</td>
-                        <td>{user.phone}</td>
-                        <td><button onClick={(event) => deleteUser(event, user.id)} className="btn btn-danger btn-sm">Deletar</button></td>
-                      </tr>
-                    )
-                  })
-                  }
-                </tbody>
-              </table>
-            </div>
-
-          </main>
-          <Footer />
-        </div>
-
+      <div>
+        <table className="table">
+          <tbody>
+            <tr>
+              <th scope="row">Nome</th>
+              <th scope="row">Email</th>
+              <th scope="row">Telefone</th>
+            </tr>
+            {loading &&
+              <div class="text-center">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+            }
+            {users.map((user) => {
+              return (
+                <tr key={user.id}>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>{user.phone}</td>
+                  <td><button onClick={(event) => deleteUser(event, user.id)} className="btn btn-danger btn-sm">Deletar</button></td>
+                </tr>
+              )
+            })
+            }
+          </tbody>
+        </table>
       </div>
-    </div>
+
+    </main>
+
   )
 }
 
