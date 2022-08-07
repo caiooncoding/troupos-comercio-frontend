@@ -31,29 +31,26 @@ function Login() {
       password: login.password,
     }
 
-    axios.get('/sanctum/csrf-cookie').then(response => {
-      axios.post('api/login', data).then(res => {
-        if (res.data.status === 200) {
-          setIsLoading(false)
+  axios.post('api/login', data).then(res => {
+    if (res.data.status === 200) {
+      setIsLoading(false)
 
-          localStorage.setItem('auth_token', res.data.token)
-          localStorage.setItem('auth_name', res.data.username)
-          localStorage.setItem('user_type', res.data.user_type)
+      localStorage.setItem('auth_token', res.data.token)
+      localStorage.setItem('auth_name', res.data.username)
+      localStorage.setItem('user_type', res.data.user_type)
 
-          navigate('/')
-        }
-        else if (res.data.status === 401) {
-          setIsLoading(false)
-          swal("Erro", res.data.message, 'warning')
-        }
-        else {
-          setIsLoading(false)
-          setLogin({ ...login, error_list: res.data.validation_errors })
-        }
-      })
-    })
-  }
-
+      navigate('/')
+    }
+    else if (res.data.status === 401) {
+      setIsLoading(false)
+      swal("Erro", res.data.message, 'warning')
+    }
+    else {
+      setIsLoading(false)
+      setLogin({ ...login, error_list: res.data.validation_errors })
+    }
+  })
+}
   return (
     <div id='home'>
       {isLoading &&

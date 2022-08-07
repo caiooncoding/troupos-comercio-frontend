@@ -14,11 +14,9 @@ const Users = () => {
   const [loading, setLoading] = useState(true)
 
   const getUsers = () => {
-    axios.get('/sanctum/csrf-cookie').then(response => {
-      axios.get('/api/index').then(res => {
-        setUsers(res.data)
-        setLoading(false)
-      })
+    axios.get('/api/index').then(res => {
+      setUsers(res.data)
+      setLoading(false)
     })
   }
 

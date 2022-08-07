@@ -33,19 +33,19 @@ function Register() {
       password: registerInput.password,
     }
 
-    axios.get('/sanctum/csrf-cookie').then(response => {
-      axios.post('/api/register', data).then(res => {
-        if (res.data.status === 200) {
-          setIsLoading(false)
-          swal('Sucesso', res.data.message, 'success')
-          navigate('/login')
-        }
-        else {
-          setIsLoading(false)
-          setRegisterInput({ ...registerInput, error_list: res.data.validation_errors })
-        }
-      })
+
+    axios.post('/api/register', data).then(res => {
+      if (res.data.status === 200) {
+        setIsLoading(false)
+        swal('Sucesso', res.data.message, 'success')
+        navigate('/login')
+      }
+      else {
+        setIsLoading(false)
+        setRegisterInput({ ...registerInput, error_list: res.data.validation_errors })
+      }
     })
+
 
   }
 
