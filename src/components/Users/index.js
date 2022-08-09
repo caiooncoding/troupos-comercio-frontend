@@ -54,9 +54,9 @@ const Users = () => {
               <th scope="row">Telefone</th>
             </tr>
             {loading &&
-              <div class="text-center">
-                <div class="spinner-border" role="status">
-                  <span class="sr-only">Loading...</span>
+              <div className="text-center">
+                <div className="spinner-border" role="status">
+                  <span className="sr-only">Loading...</span>
                 </div>
               </div>
             }

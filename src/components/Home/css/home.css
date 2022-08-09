@@ -722,6 +722,11 @@
 			background: #fff;
 			border-top:1px solid #eee;
 		}
+
+#home .header-inner .cat-heading-categories {
+	margin-bottom: 0px;
+}
+
 #home .header.shop .topbar p {
 			color: #333;
 		}
@@ -732,7 +737,7 @@
 			background: #f7941d;
 		}
 #home .header.shop .all-category h3{
-			padding: 20px 25px;
+			padding: 12px 25px;
 		}
 #home .header.shop .cat-heading {
 			font-size: 20px;
@@ -4051,6 +4056,10 @@
 			color:#F7941D;
 		}
 		/* Related Product */
+#home .section {
+	padding: 40px 0;
+	position: relative;
+}
 #home .related-product{
 			padding-top:0;
 		}
@@ -4820,6 +4829,15 @@
 			text-transform: capitalize;
 			margin-bottom: 30px;
 		}
+
+#home .footer .single-footer h1 {
+	font-size: 25px;
+	font-weight: 600;
+	color: #fff;
+	text-transform: capitalize;
+	margin-bottom: 30px;
+}
+
 #home .footer .about .logo{
 			margin-bottom:20px;
 		}

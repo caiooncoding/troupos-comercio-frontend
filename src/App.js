@@ -12,6 +12,7 @@ import ViewProduct from './components/Products/view';
 import Development from './components/development/index';
 import EditCategory from './components/Categories/edit';
 import EditProduct from './components/Products/edit';
+import ViewCategory from './components/Categories/view';
 import Footer from './layouts/admin/Footer';
 import Navbar from './layouts/admin/Navbar';
 import Sidebar from './layouts/admin/Sidebar';
@@ -30,9 +31,9 @@ axios.interceptors.request.use(function (config) {
 
 if (window.location.pathname.includes('/admin')) {
     axios.get('/api/users/me').then(response => {
-        
+
     }).catch(error => {
-        if(error.response.status == 401){
+        if (error.response.status == 401) {
             localStorage.clear()
             window.location.href = `${process.env.REACT_APP_URL}/login`
         }
@@ -44,32 +45,36 @@ function App() {
     return (
         <div>
             {!window.location.pathname.includes('/admin') ?
+                    <BrowserRouter>
+                        <Routes>
+                            <Route
+                                path="/"
+                                element={<Development />}
+                            />
+                            <Route
+                                path="/:slug/:id"
+                                element={<ViewCategory />}
+                            />
 
-                <BrowserRouter>
-                    <Routes>
-                        <Route
-                            path="/"
-                            element={<Development />}
-                        />
+                            <Route
+                                path="/home"
+                                element={<Home />}
+                            />
 
-                        <Route
-                            path="/home"
-                            element={<Home />}
-                        />
+                            <Route
+                                path="/login"
+                                element={<Login />}
+                            />
 
-                        <Route
-                            path="/login"
-                            element={<Login />}
-                        />
-
-                        <Route
-                            path="/register"
-                            element={<Register />}
-                        />
+                            <Route
+                                path="/register"
+                                element={<Register />}
+                            />
 
 
-                    </Routes>
-                </BrowserRouter>
+
+                        </Routes>
+                    </BrowserRouter>
                 :
                 <div className='sb-nav-fixed'>
                     <Navbar />

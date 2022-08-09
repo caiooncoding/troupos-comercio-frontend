@@ -97,18 +97,18 @@ const Products = () => {
           <div className='card-body'>
             <form onSubmit={submitProduct} encType='multipart/form-data'>
 
-              <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Informações Básicas</button>
+              <ul className="nav nav-tabs" id="myTab" role="tablist">
+                <li className="nav-item" role="presentation">
+                  <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Informações Básicas</button>
                 </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="otherdetails-tab" data-bs-toggle="tab" data-bs-target="#otherdetails" type="button" role="tab" aria-controls="otherdetails" aria-selected="false">Informações Complementares</button>
+                <li className="nav-item" role="presentation">
+                  <button className="nav-link" id="otherdetails-tab" data-bs-toggle="tab" data-bs-target="#otherdetails" type="button" role="tab" aria-controls="otherdetails" aria-selected="false">Informações Complementares</button>
                 </li>
               </ul>
 
-              <div class="tab-content" id="myTabContent">
+              <div className="tab-content" id="myTabContent">
 
-                <div class="tab-pane card-body border fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div className="tab-pane card-body border fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
                   <div className='form-group mb-3'>
                     <label>Selecione uma Categoria</label>
@@ -137,7 +137,7 @@ const Products = () => {
                   </div>
                 </div>
 
-                <div class="tab-pane card-body border fade" id="otherdetails" role="tabpanel" aria-labelledby="otherdetails-tab">
+                <div className="tab-pane card-body border fade" id="otherdetails" role="tabpanel" aria-labelledby="otherdetails-tab">
                   <div className='row'>
                     <div className='col-md-4 form-group mb-3'>
                       <label>Preço de Venda</label>
@@ -166,8 +166,8 @@ const Products = () => {
 
               </div>
               {loading ?
-                <div class="spinner-border" role="status">
-                  <span class="sr-only">Loading...</span>
+                <div className="spinner-border" role="status">
+                  <span className="sr-only">Loading...</span>
                 </div>
                 :
                 <button type='submit' className='btn btn-primary px-4 mt-2'>Adicionar Produto</button>

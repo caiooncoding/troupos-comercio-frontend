@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import swal from "sweetalert";
-import { useNavigate } from 'react-router-dom';
-import './css/home.css';
+import React, { useEffect, useState } from 'react';
+import swal from 'sweetalert';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
+function ViewCategory() {
+  const category_props = useParams();
 
-function Home() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [categories, setCategories] = useState([])
+  const navigate = useNavigate();
+
+  const [category, setCategory] = useState({});
+  const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([])
-
+  const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState([])
 
   const getCategories = () => {
     axios.get('/api/category/show').then(res => {
@@ -18,25 +21,41 @@ function Home() {
     })
   }
 
-  const getProducts = () => {
-    axios.get('/api/view-product').then(response => {
+  const getCategory = () => {
+    axios.get(`/api/category/${category_props.id}`).then(response => {
       if (response.data.status === 200) {
-        setProducts(response.data.products)
+        setCategory({
+          ...response.data.category
+        });
+        setLoading(false)
+      } else if (response.data.status === 404) {
+        swal('Erro', response.data.message, 'error')
+        navigate('/')
       }
     })
   }
 
-  const navigate = useNavigate();
+  const getProductsByCategory = (id) => {
+    axios.get(`/api/view-product/byCategory/${id}`).then(response => {
+      setProducts(response.data)
+    })
+  }
 
+  useEffect(() => {
+    getCategories()
+    getCategory()
+    getProductsByCategory(category_props.id)
+
+  }, [])
 
   const logout = (e) => {
     e.preventDefault()
-    setIsLoading(true)
+    setLoading(true)
     axios.post('/api/logout').then(res => {
       if (res.data.status === 200) {
         localStorage.removeItem('auth_token');
         localStorage.removeItem('auth_name')
-        setIsLoading(false)
+        setLoading(false)
         swal("Success", res.data.message, "success")
         navigate('/')
       }
@@ -55,14 +74,9 @@ function Home() {
     )
   }
 
-
-  useEffect(() => {
-    getCategories()
-    getProducts()
-  }, [])
-
   return (
-    <div id="home" className='home'>
+
+    <div id='home'>
       {isLoading &&
         <div className="preloader">
           <div className="preloader-inner">
@@ -178,7 +192,7 @@ function Home() {
         <div className="header-inner">
           <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
-              <a className="navbar-brand" href="#">  </a>
+              <a className="navbar-brand" href="#"></a>
               <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
               </button>
@@ -191,7 +205,7 @@ function Home() {
                     <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                       {categories.map((item) => {
                         return (
-                          <li><a className="dropdown-item" href={`/${item.slug}/${item.id}`}>{item.name}</a></li>
+                          <li key={item.id}><a className="dropdown-item" href={`/${item.slug}/${item.id}`}>{item.name}</a></li>
                         )
                       })}
                     </ul>
@@ -209,7 +223,7 @@ function Home() {
           <div className="row">
             <div className="col-12">
               <div className="section-title">
-                <h2>Produtos</h2>
+                <h2>{category.name}</h2>
               </div>
             </div>
           </div>
@@ -303,9 +317,9 @@ function Home() {
           </div>
         </div>
       </footer>
-
     </div>
+
   )
 }
 
-export default Home;
+export default ViewCategory;
