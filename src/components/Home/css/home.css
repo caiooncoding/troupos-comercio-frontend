@@ -4973,3 +4973,7 @@
 	color: white;
 	background-color: #F7941D;
 }
+
+#home .list-main a {
+	cursor: pointer;
+}

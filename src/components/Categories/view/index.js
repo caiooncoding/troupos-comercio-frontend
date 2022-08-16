@@ -10,6 +10,7 @@ function ViewCategory() {
 
   const navigate = useNavigate();
 
+  const [search, setSearch] = useState('');
   const [category, setCategory] = useState({});
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([])
@@ -50,6 +51,35 @@ function ViewCategory() {
         </div>
       )
     });
+
+  const displayFilterProducts = products.filter((product) => {
+    if (product.name.toLowerCase().includes(search.toLowerCase()))
+      return product
+  }).map((product, index) => {
+    return (
+      <div className="col-3" key={index}>
+        <div className="single-product">
+          <div className="product-img">
+            <a className='product-img-cover' style={{ backgroundImage: `url('${process.env.REACT_APP_API}/${product.image}')` }}>
+            </a>
+            <div className="button-head">
+              <div className="product-action">
+                <a onClick={(e) => sendSingleProductMessage(e, product)}>Pedir Agora</a>
+              </div>
+              <div className="product-action-2">
+                <a onClick={(e) => {
+                  addToCart(product, e)
+                }} >Adicionar ao Carrinho</a>
+              </div>
+            </div>
+          </div>
+          <div className="product-content">
+            <h6>{product.name}</h6>
+          </div>
+        </div>
+      </div>
+    )
+  })
 
   const pageCount = Math.ceil(products.length / productsPerPage)
 
@@ -203,7 +233,7 @@ function ViewCategory() {
                 <div className="search-bar-top">
                   <div className="search-bar">
                     <form>
-                      <input name="search" placeholder="Pesquise por produtos aqui" type="search" />
+                      <input name="search" placeholder="Pesquise por produtos aqui" type="search" onChange={(e) => setSearch(e.target.value)} />
                       <div className="btnn"><i className="ti-search"></i></div>
                     </form>
                   </div>
@@ -298,18 +328,35 @@ function ViewCategory() {
             <div className="col-12">
               <div className="product-info">
                 <div className="row">
-                  {displayProducts}
-                  <ReactPaginate
-                    previousLabel={'Anterior'}
-                    nextLabel={'Próximo'}
-                    pageCount={pageCount}
-                    onPageChange={changePage}
-                    containerClassName={"paginationBttns"}
-                    previousLinkClassName={"previousBttn"}
-                    nextLinkClassName={"nextBttn"}
-                    disabledClassName={"paginationDisabled"}
-                    activeClassName={"paginationActive"}
-                  />
+                  {search != "" ?
+                    <div className="row">
+                      {displayFilterProducts.length == 0
+                        ?
+                        <div className='d-flex vw-50 vh-50'>
+                          <div className='text-center align-self-center vw-100'>
+                            <h1>Nenhum Produto Encontrado Nesta Categoria</h1>
+                          </div>
+                        </div>
+                        :
+                        displayFilterProducts
+                      }
+                    </div>
+                    :
+                    <div className='row'>
+                      {displayProducts}
+                      <ReactPaginate
+                        previousLabel={'Anterior'}
+                        nextLabel={'Próximo'}
+                        pageCount={pageCount}
+                        onPageChange={changePage}
+                        containerClassName={"paginationBttns"}
+                        previousLinkClassName={"previousBttn"}
+                        nextLinkClassName={"nextBttn"}
+                        disabledClassName={"paginationDisabled"}
+                        activeClassName={"paginationActive"}
+                      />
+                    </div>
+                  }
                 </div>
               </div>
             </div>
