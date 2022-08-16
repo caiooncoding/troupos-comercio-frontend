@@ -4944,3 +4944,32 @@
 			left: 0;
 			bottom: 0;
 		}
+
+#home .paginationBttns {
+	width: 100%;
+	height: 30px;
+	margin-top: 40px;
+	list-style: none;
+	display: flex;
+	justify-content: center;
+}
+
+#home .paginationBttns a {
+	padding: 10px;
+	margin: 8px;
+	border-radius: 5px;
+	border: 1px solid #F7941D;
+	color: #F7941D;
+	cursor: pointer;
+	background-color: #524e4e;
+}
+
+#home .paginationBttns a:hover {
+	color: white;
+	background-color: #F7941D;
+}
+
+#home .paginationActive a {
+	color: white;
+	background-color: #F7941D;
+}

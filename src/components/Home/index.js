@@ -1,15 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import swal from "sweetalert";
 import { useNavigate } from 'react-router-dom';
 import './css/home.css';
-
+import ReactPaginate from 'react-paginate';
 
 
 function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState([])
   const [products, setProducts] = useState([])
+  const [cart, setCart] = useState(() => {
+    const localCart = localStorage.getItem('cart')
+    return localCart === null ? [] : JSON.parse(localCart);
+  })
+  const [page, setPage] = useState(0)
+  const productsPerPage = 12;
+  const pagesVisited = page * productsPerPage;
+
+  const displayProducts = products
+    .slice(pagesVisited, pagesVisited + productsPerPage)
+    .map((product, index) => {
+      return (
+        <div className="col-3" key={index}>
+          <div className="single-product">
+            <div className="product-img">
+              <a className='product-img-cover' style={{ backgroundImage: `url('${process.env.REACT_APP_API}/${product.image}')` }}>
+              </a>
+              <div className="button-head">
+                <div className="product-action">
+                  <a onClick={(e) => sendSingleProductMessage(e, product)}>Pedir Agora</a>
+                </div>
+                <div className="product-action-2">
+                  <a onClick={(e) => {
+                    addToCart(product, e)
+                  }} >Adicionar ao Carrinho</a>
+                </div>
+              </div>
+            </div>
+            <div className="product-content">
+              <h6>{product.name}</h6>
+            </div>
+          </div>
+        </div>
+      )
+    });
+
+  const pageCount = Math.ceil(products.length / productsPerPage)
+
+  const changePage = ({ selected }) => {
+    setPage(selected)
+    window.scrollTo(0, 0);
+  }
 
 
   const getCategories = () => {
@@ -55,6 +97,53 @@ function Home() {
     )
   }
 
+  const sendSingleProductMessage = (e, item) => {
+    e.preventDefault();
+    window.location.replace(`https://api.whatsapp.com/send?phone=554730567718&text=Ol%C3%A1,%20tenho%20interesse%20no%20produto:%0a*${item.name}*%0a`)
+  }
+
+  const sendRequestToWhatsApp = (e) => {
+    e.preventDefault()
+    let whatsapp = `https://api.whatsapp.com/send?phone=554730567718&text=Ol%C3%A1,%20tenho%20interesse%20nos%20produtos:%0a`
+    let productsToSend = []
+    cart.forEach((item) => {
+      productsToSend.push(encodeURI(item.name))
+    })
+
+    productsToSend.forEach((item) => {
+      let productMessage = '*' + item + '*' + '%0a';
+      whatsapp += productMessage
+    })
+
+    window.location.replace(whatsapp)
+
+    localStorage.clear('cart')
+  }
+
+  const addToCart = (item, e) => {
+    e.preventDefault()
+    cart.push(item);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    const localCart = localStorage.getItem('cart')
+    setCart(JSON.parse(localCart))
+    swal('Sucesso', 'Item Adicionado com Sucesso', 'success')
+  }
+
+  const removeFromCart = (item, e) => {
+    e.preventDefault()
+    cart.pop(item);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    const localCart = localStorage.getItem('cart')
+    setCart(JSON.parse(localCart))
+    swal('Sucesso', 'Item Removido com Sucesso', 'success')
+  }
+
+  const showInfoMessage = (e) => {
+    e.preventDefault();
+    swal("Como Funcionamos?", "Aqui no site você tem duas opções. Em 'Pedir Agora' você será redirecionado para o WhatsApp solicitando o orçamento do Produto direto com a loja, para saber sua disponibilidade, preço e se tem a opção de entrega, ou você também pode fazer um carrinho e solicitar vários items de uma vez só.")
+  }
+
+
 
   useEffect(() => {
     getCategories()
@@ -92,6 +181,7 @@ function Home() {
 
                 <div className="right-content">
                   <ul className="list-main">
+                    <li><i className='ti-help-alt'></i> <a onClick={(e) => showInfoMessage(e)}>Como Funcionamos?</a></li>
                     <li><i className="ti-location-pin" ></i>Localização da Loja</li>
                     <li><i className="ti-user"></i> <a href="/">Minha Conta</a></li>
                     {AuthButtons}
@@ -109,68 +199,65 @@ function Home() {
               <div className="col-lg-2 col-md-2 col-12">
 
                 <div className="container-fluid">
-                  <h5 href="/">Troupos Comércio de Ferramentas</h5>
+                  <h5>Troupos Comércio de Ferramentas</h5>
                 </div>
-
-                <div className="search-top">
-                  <div className="top-search"><a href="#0"><i className="ti-search"></i></a></div>
-
-                  <div className="search-top">
-                    <form className="search-form">
-                      <input type="text" placeholder="Search here..." name="search" />
-                      <button value="search" type="button"><i className="ti-search"></i></button>
-                    </form>
-                  </div>
-
-                </div>
-
-                <div className="mobile-nav"></div>
               </div>
               <div className="col-lg-8 col-md-7 col-12">
                 <div className="search-bar-top">
                   <div className="search-bar">
                     <form>
-                      <input name="search" placeholder="Pesquise por produtos aqui" type="search" />
-                      <button className="btnn"><i className="ti-search"></i></button>
+                      <input name="search" placeholder="Pesquise por produtos aqui" type="search"/>
+                      <div className="btnn"><i className="ti-search"></i></div>
                     </form>
                   </div>
                 </div>
               </div>
-              <div className="col-lg-2 col-md-3 col-12">
-                <div className="right-bar">
-                  <div className="sinlge-bar shopping">
-                    <a href="/" className="single-icon"><i className="ti-bag"></i> <span className="total-count">3</span></a>
-
-                    <div className="shopping-item">
-                      <div className="dropdown-cart-header">
-                        <span> Items</span>
-                        <a href="/">View Cart</a>
-                      </div>
-                      <ul className="shopping-list">
-                        <li>
-                          <a href="/" className="remove" title="Remove this item"><i className="fa fa-remove"></i></a>
-                          <a className="cart-img" href="/"><img src="https://via.placeholder.com/70x70" alt="#" /></a>
-                          <h4><a href="/">Woman Ring</a></h4>
-                          <p className="quantity">1x - <span className="amount">$99.00</span></p>
-                        </li>
-                        <li>
-                          <a href="/" className="remove" title="Remove this item"><i className="fa fa-remove"></i></a>
-                          <a className="cart-img" href="/"><img src="https://via.placeholder.com/70x70" alt="#" /></a>
-                          <h4><a href="/">Woman Necklace</a></h4>
-                          <p className="quantity">1x - <span className="amount">$35.00</span></p>
-                        </li>
-                      </ul>
-                      <div className="bottom">
-                        <div className="total">
-                          <span>Total</span>
-                          <span className="total-amount">$134.00</span>
+              {cart.length > 0 ?
+                <div className="col-lg-2 col-md-3 col-12">
+                  <div className="right-bar">
+                    <div className="sinlge-bar shopping">
+                      <a className="single-icon"><i className="ti-bag"></i> <span className="total-count">{cart.length}</span></a>
+                      <div className="shopping-item">
+                        <div className="dropdown-cart-header">
+                          <span>Items</span>
                         </div>
-                        <a href="/" className="btn animate">Checkout</a>
+                        {cart.map(item => {
+                          return (
+                            <ul className="shopping-list">
+                              <li>
+                                <a onClick={(e) => removeFromCart(item, e)} className="remove" title="Remover item"><i className="fa fa-remove"></i></a>
+                                <a className="cart-img" ><img src={`${process.env.REACT_APP_API}/${item.image}`} alt="#" /></a>
+                                <h4><a>{item.name}</a></h4>
+                              </li>
+                            </ul>
+                          )
+                        })}
+                        <div className="bottom">
+                          <a onClick={(e) => sendRequestToWhatsApp(e)} className="btn animate">Fazer Pedido</a>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+                :
+                <div className="col-lg-2 col-md-3 col-12">
+                  <div className="right-bar">
+                    <div className="sinlge-bar shopping">
+                      <a className="single-icon"><i className="ti-bag"></i> <span className="total-count">0</span></a>
+                      <div className="shopping-item">
+                        <div className="dropdown-cart-header">
+                          <span>Items</span>
+                        </div>
+                        <div className="bottom">
+                          <div className="total">
+                          </div>
+                          <a className="btn animate">Adicione Items ao Carrinho</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
             </div>
           </div>
         </div>
@@ -178,7 +265,7 @@ function Home() {
         <div className="header-inner">
           <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
-              <a className="navbar-brand" href="#">  </a>
+              <a className="navbar-brand" href="/"></a>
               <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
               </button>
@@ -191,7 +278,7 @@ function Home() {
                     <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                       {categories.map((item) => {
                         return (
-                          <li><a className="dropdown-item" href={`/${item.slug}/${item.id}`}>{item.name}</a></li>
+                          <li><a className="dropdown-item" href={`/categoria/${item.slug}/${item.id}`}>{item.name}</a></li>
                         )
                       })}
                     </ul>
@@ -217,29 +304,18 @@ function Home() {
             <div className="col-12">
               <div className="product-info">
                 <div className="row">
-                  {products.map(item => {
-                    return (
-                      <div className="col-3">
-                        <div className="single-product">
-                          <div className="product-img">
-                            <a href="/" className='product-img-cover' style={{ backgroundImage: `url('${process.env.REACT_APP_API}/${item.image}')` }}>
-                            </a>
-                            <div className="button-head">
-                              <div className="product-action">
-                                <a title="Order Now" href="/">Pedir Agora</a>
-                              </div>
-                              <div className="product-action-2">
-                                <a title="Add to cart" href="/">Adicionar ao Carrinho</a>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="product-content">
-                            <h3><a href="/">{item.name}</a></h3>
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })}
+                  {displayProducts}
+                  <ReactPaginate
+                    previousLabel={'Anterior'}
+                    nextLabel={'Próximo'}
+                    pageCount={pageCount}
+                    onPageChange={changePage}
+                    containerClassName={"paginationBttns"}
+                    previousLinkClassName={"previousBttn"}
+                    nextLinkClassName={"nextBttn"}
+                    disabledClassName={"paginationDisabled"}
+                    activeClassName={"paginationActive"}
+                  />
                 </div>
               </div>
             </div>

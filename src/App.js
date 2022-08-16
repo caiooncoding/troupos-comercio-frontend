@@ -45,36 +45,35 @@ function App() {
     return (
         <div>
             {!window.location.pathname.includes('/admin') ?
-                    <BrowserRouter>
-                        <Routes>
-                            <Route
-                                path="/"
-                                element={<Development />}
-                            />
-                            <Route
-                                path="/:slug/:id"
-                                element={<ViewCategory />}
-                            />
+                <BrowserRouter>
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={<Development />}
+                        />
 
-                            <Route
-                                path="/home"
-                                element={<Home />}
-                            />
+                        <Route
+                            path="/home"
+                            element={<Home />}
+                        />
 
-                            <Route
-                                path="/login"
-                                element={<Login />}
-                            />
+                        <Route
+                            path="/login"
+                            element={<Login />}
+                        />
 
-                            <Route
-                                path="/register"
-                                element={<Register />}
-                            />
+                        <Route
+                            path="/register"
+                            element={<Register />}
+                        />
+                        <Route
+                            path="/categoria/:slug/:id"
+                            element={<ViewCategory />}
+                        />
 
 
-
-                        </Routes>
-                    </BrowserRouter>
+                    </Routes>
+                </BrowserRouter>
                 :
                 <div className='sb-nav-fixed'>
                     <Navbar />
@@ -124,7 +123,7 @@ function App() {
                     </div>
                 </div>
             }
-        </div>
+        </div >
     );
 }
 
