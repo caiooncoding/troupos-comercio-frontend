@@ -173,6 +173,15 @@ function Home() {
     swal("Como Funcionamos?", "Aqui no site você tem duas opções. Em 'Pedir Agora' você será redirecionado para o WhatsApp solicitando o orçamento do Produto direto com a loja, para saber sua disponibilidade, preço e se tem a opção de entrega, ou você também pode fazer um carrinho e solicitar vários items de uma vez só.")
   }
 
+  const handleClick = (e) => {
+    e.preventDefault();
+    if(localStorage.getItem('auth_token')){
+      navigate('/myAccount')
+    } else {
+      navigate('/login')
+    }
+  }
+
 
 
   useEffect(() => {
@@ -213,7 +222,7 @@ function Home() {
                   <ul className="list-main">
                     <li><i className='ti-help-alt'></i> <a onClick={(e) => showInfoMessage(e)}>Como Funcionamos?</a></li>
                     <li><i className="ti-location-pin" ></i>Localização da Loja</li>
-                    <li><i className="ti-user"></i> <a href="/">Minha Conta</a></li>
+                    <li><i className="ti-user"></i> <a onClick={(e) => handleClick(e)}>Minha Conta</a></li>
                     {AuthButtons}
                   </ul>
                 </div>
@@ -335,7 +344,7 @@ function Home() {
               <div className="product-info">
                 {search != "" ?
                   <div className="row">
-                    {displayFilterProducts.length == 0 
+                    {displayFilterProducts.length == 0
                       ?
                       <div className='d-flex vw-50 vh-50'>
                         <div className='text-center align-self-center vw-100'>
@@ -344,7 +353,7 @@ function Home() {
                       </div>
                       :
                       displayFilterProducts
-                  }
+                    }
                   </div>
                   :
                   <div className='row'>
@@ -379,7 +388,7 @@ function Home() {
                   <div>
                     <h1>Troupos Comércio de Ferramentas</h1>
                   </div>
-                  <p className="text">Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue,  magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.</p>
+                  <p className="text">A nossa loja tem uma grande variedade de produtos nacionais e importados, ferramentas, utensílios domésticos, eletrônicos e muito mais.</p>
                   <p className="call">Tem alguma dúvida? Nos contate!<span><a href="tel:4730567718">(47)3056-7718</a></span></p>
                 </div>
 

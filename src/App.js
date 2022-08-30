@@ -16,7 +16,7 @@ import ViewCategory from './components/Categories/view';
 import Footer from './layouts/admin/Footer';
 import Navbar from './layouts/admin/Navbar';
 import Sidebar from './layouts/admin/Sidebar';
-
+import MyAccount from './components/MyAccount/index';
 
 axios.defaults.baseURL = process.env.REACT_APP_API;
 axios.defaults.headers.post['Accept'] = 'application/json';
@@ -49,11 +49,6 @@ function App() {
                     <Routes>
                         <Route
                             path="/"
-                            element={<Development />}
-                        />
-
-                        <Route
-                            path="/home"
                             element={<Home />}
                         />
 
@@ -71,6 +66,10 @@ function App() {
                             element={<ViewCategory />}
                         />
 
+                        <Route
+                            path="/myAccount"
+                            element={<MyAccount/>} 
+                        />
 
                     </Routes>
                 </BrowserRouter>

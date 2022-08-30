@@ -176,6 +176,33 @@ function ViewCategory() {
     )
   }
 
+  const sendRequestToWhatsApp = (e) => {
+    e.preventDefault()
+    let whatsapp = `https://api.whatsapp.com/send?phone=554730567718&text=Ol%C3%A1,%20tenho%20interesse%20nos%20produtos:%0a`
+    let productsToSend = []
+    cart.forEach((item) => {
+      productsToSend.push(encodeURI(item.name))
+    })
+
+    productsToSend.forEach((item) => {
+      let productMessage = '*' + item + '*' + '%0a';
+      whatsapp += productMessage
+    })
+
+    window.location.replace(whatsapp)
+
+    localStorage.clear('cart')
+  }
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    if(localStorage.getItem('auth_token')){
+      navigate('/myAccount')
+    } else {
+      navigate('/login')
+    }
+  }
+ 
   return (
 
     <div id='home'>
@@ -210,11 +237,10 @@ function ViewCategory() {
                   <ul className="list-main">
                     <li><i className='ti-help-alt'></i> <a onClick={(e) => showInfoMessage(e)}>Como Funcionamos?</a></li>
                     <li><i className="ti-location-pin" ></i>Localização da Loja</li>
-                    <li><i className="ti-user"></i> <a >Minha Conta</a></li>
+                    <li><i className="ti-user"></i> <a onClick={(e) => handleClick(e)}>Minha Conta</a></li>
                     {AuthButtons}
                   </ul>
                 </div>
-
               </div>
             </div>
           </div>
@@ -243,21 +269,24 @@ function ViewCategory() {
                 <div className="col-lg-2 col-md-3 col-12">
                   <div className="right-bar">
                     <div className="sinlge-bar shopping">
-                      <a href="/" className="single-icon"><i className="ti-bag"></i> <span className="total-count">{cart.length}</span></a>
+                      <a className="single-icon"><i className="ti-bag"></i> <span className="total-count">{cart.length}</span></a>
                       <div className="shopping-item">
+                        <div className="dropdown-cart-header">
+                          <span>Items</span>
+                        </div>
                         {cart.map(item => {
                           return (
                             <ul className="shopping-list">
                               <li>
                                 <a onClick={(e) => removeFromCart(item, e)} className="remove" title="Remover item"><i className="fa fa-remove"></i></a>
-                                <a className="cart-img" href="/"><img src={`${process.env.REACT_APP_API}/${item.image}`} alt="#" /></a>
-                                <h4><a href="/">{item.name}</a></h4>
+                                <a className="cart-img" ><img src={`${process.env.REACT_APP_API}/${item.image}`} alt="#" /></a>
+                                <h4><a>{item.name}</a></h4>
                               </li>
                             </ul>
                           )
                         })}
                         <div className="bottom">
-                          <a href="/" className="btn animate">Fazer Pedido</a>
+                          <a onClick={(e) => sendRequestToWhatsApp(e)} className="btn animate">Fazer Pedido</a>
                         </div>
                       </div>
                     </div>
@@ -267,7 +296,7 @@ function ViewCategory() {
                 <div className="col-lg-2 col-md-3 col-12">
                   <div className="right-bar">
                     <div className="sinlge-bar shopping">
-                      <a href="/" className="single-icon"><i className="ti-bag"></i> <span className="total-count">0</span></a>
+                      <a className="single-icon"><i className="ti-bag"></i> <span className="total-count">0</span></a>
                       <div className="shopping-item">
                         <div className="dropdown-cart-header">
                           <span>Items</span>
@@ -275,7 +304,7 @@ function ViewCategory() {
                         <div className="bottom">
                           <div className="total">
                           </div>
-                          <a href="/" className="btn animate">Fazer Pedido</a>
+                          <a className="btn animate">Adicione Items ao Carrinho</a>
                         </div>
                       </div>
                     </div>
@@ -302,7 +331,7 @@ function ViewCategory() {
                     <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                       {categories.map((item) => {
                         return (
-                          <li key={item.id}><a className="dropdown-item" href={`/${item.slug}/${item.id}`}>{item.name}</a></li>
+                          <li key={item.id}><a className="dropdown-item" href={`/categoria/${item.slug}/${item.id}`}>{item.name}</a></li>
                         )
                       })}
                     </ul>
@@ -375,7 +404,7 @@ function ViewCategory() {
                   <div>
                     <h1>Troupos Comércio de Ferramentas</h1>
                   </div>
-                  <p className="text">Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue,  magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.</p>
+                  <p className="text">A nossa loja tem uma grande variedade de produtos nacionais e importados, ferramentas, utensílios domésticos, eletrônicos e muito mais.</p>
                   <p className="call">Tem alguma dúvida? Nos contate!<span><a href="tel:4730567718">(47)3056-7718</a></span></p>
                 </div>
 

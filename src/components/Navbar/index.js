@@ -35,7 +35,7 @@ function Navbar() {
       <li><button type="button" onClick={logout} className="nav-link btn btn-danger btn-sm text-white">Logout</button></li>
     )
   }
-  
+
 
   return (
     <header className="header shop">
@@ -73,7 +73,9 @@ function Navbar() {
                 <div className="col-lg-2 col-md-2 col-12">
 
                   <div className="container-fluid">
-                    <h5 href="#">Troupos Comércio de Ferramentas</h5>
+                    <div className='clickToHome'>
+                      <h5>Troupos Comércio de Ferramentas</h5>
+                    </div>
                   </div>
 
                   <div className="search-top">
@@ -91,34 +93,6 @@ function Navbar() {
                   <div className="mobile-nav"></div>
                 </div>
                 <div className="col-lg-8 col-md-7 col-12">
-                </div>
-                <div className="col-lg-2 col-md-3 col-12">
-                  <div className="right-bar">
-
-                    <div className="sinlge-bar">
-                      <a href="#" className="single-icon"><i className="fa fa-heart-o" aria-hidden="true"></i></a>
-                    </div>
-                    <div className="sinlge-bar">
-                      <a href="#" className="single-icon"><i className="fa fa-user-circle-o" aria-hidden="true"></i></a>
-                    </div>
-                    <div className="sinlge-bar shopping">
-                      <a href="#" className="single-icon"><i className="ti-bag"></i></a>
-
-                      <div className="shopping-item">
-                        <div className="dropdown-cart-header">
-                          <span>Items</span>
-                          <a href="#">View Cart</a>
-                        </div>
-                        <div className="bottom">
-                          <div className="total">
-                            <span>Total</span>
-                            <span className="total-amount">R$0.00</span>
-                          </div>
-                          <a href="#" className="btn animate">Checkout</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
